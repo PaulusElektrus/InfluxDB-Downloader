@@ -15,7 +15,10 @@ def download(series, measurement, database, query):
 
     df = pd.DataFrame(points)
 
-    path = "../data/" + series + ".csv"
+    if series == None:
+        series = database
+
+    path = "./data/" + series + ".csv"
 
     df.to_csv(path)
 
@@ -26,7 +29,12 @@ def download(series, measurement, database, query):
 def parse_args():
     parser = argparse.ArgumentParser(description="Download InfluxDB Data")
     parser.add_argument(
-        "-s", "--series", type=str, required=False, help="specify series to download"
+        "-s",
+        "--series",
+        type=str,
+        default="*",
+        required=False,
+        help="specify series to download or leaf empty to download all series",
     )
     parser.add_argument(
         "-m", "--measurement", type=str, required=False, help="from given measurement"
